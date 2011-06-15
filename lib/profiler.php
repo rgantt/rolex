@@ -32,11 +32,10 @@ class rolex {
             throw new timing_exception("timer must be started before it can be ended");
         }
         $this->timers[ $key ]['end'] = microtime( true );
-        $result = $this->add_result( 
+        return $this->add_result( 
             $this->timers[ $key ]['message'], 
             ( $this->timers[ $key ]['end'] - $this->timers[ $key ]['start'] )
         );
-        return $result;
     }
     
     public function get_results() {
