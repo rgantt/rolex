@@ -1,12 +1,12 @@
 h2. Rolex is a simple timing and profiling utility written in PHP
 
-It's designed to time and document the performance of closures, since this is the easiest way to look at the execution time of an entire scope. It's "prettier" than just tossing in @start()@ and @stop()@ calls like most PHP profilers seem to do (although you can certainly do that, too!).
+It's designed to time and document the performance of closures, since this is the easiest way to look at the execution time of an entire scope. It's "prettier" than just tossing in @start()@ and @stop()@ calls like most PHP profilers seem to do (although you can do that too, if you want).
 
-The software itself consists of a handful of utility classes that are easily accessible through a facade of static class methods.
+The utility consists of a handful of utility classes that are easily accessible through a facade of static class methods.
 
 h2. Example usage
 
-Suppose that you wanted to compare the execution time of variable access versus instance variable access. In that case, you would run two profiles (one for the former and one for the latter).
+Say you want to compare the execution time of PHP's variable access versus instance variable access. In that case, you would run two profiles (one for the former and one for the latter).
 
 The first might look like:
 
@@ -19,7 +19,7 @@ pre. echo r::run( "instance variable access", function() {
     }
 });
 
-Your second profile might look like:
+The second:
 
 pre. echo r::run( "straight-up variable access", function() {
     $foo = "bar";
