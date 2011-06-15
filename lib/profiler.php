@@ -1,50 +1,6 @@
 <?php
 namespace rolex;
 
-/**
- * Facade providing access to the profiler
- *
- * @author ganttr
- */
-class r {
-    static $instance = null;
-    
-    public static function rolex() {
-        if( !( self::$instance instanceof rolex ) )
-            self::$instance = new rolex();
-        return self::$instance;
-    }
-    
-    public static function run( $message, $closure ) {
-        return self::rolex()->profile_function( $message, $closure );
-    }
-    
-    public static function start( $key, $message = '' ) {
-        return self::rolex()->start_timer( $key, $message );
-    }
-    
-    public static function stop( $key ) {
-        return self::rolex()->end_timer( $key );
-    }
-    
-    public static function save( $message, $duration ) {
-        return self::rolex()->add_result( $message, $duration );
-    }
-    
-    public static function clear() {
-        return self::rolex()->clear_results();
-    }
-    
-    public static function results() {
-        return self::rolex()->get_results();
-    }
-    
-    public static function reset() {
-        self::rolex()->clear_results();
-        self::rolex()->reset_timers();
-    }
-}
-
 class rolex {
     private $results = array();
     private $timers = array();
