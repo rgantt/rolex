@@ -10,7 +10,7 @@ Suppose that you wanted to compare the execution time of variable access versus 
 
 The first might look like:
 
-pre echo r::run( "instance variable access", function() {
+pre. echo r::run( "instance variable access", function() {
     $obj = new stdClass;
     $obj->foo = "bar";
     $dev_null = null;
@@ -22,7 +22,7 @@ pre echo r::run( "instance variable access", function() {
 
 Your second profile might look like:
 
-pre echo r::run( "straight-up variable access", function() {
+pre. echo r::run( "straight-up variable access", function() {
     $foo = "bar";
     $dev_null = null;
     
