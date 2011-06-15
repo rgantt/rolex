@@ -29,6 +29,6 @@ pre. echo r::run( "straight-up variable access", function() {
     }
 });
 
-You can see that the profiling code is really minimal. You call it simply, and it does what you expect: it displays the difference in float microtime between the moment the closure is called and the moment the closure is finished executing.
+The profiling code and overhead is minimal. You call it simply, and it does what you expect: it displays the difference in float microtime between the moment the closure is called and the moment the closure is finished executing.
 
 The default output of a call to @r::run@ is the message you provide the profiler with the execution time appended to it. For the first example, you might see @instance variable access 1.200102939933@ as the result.
