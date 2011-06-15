@@ -1,6 +1,6 @@
-h2. Rolex is a simple timing and profiling utility written in PHP
+h2. Rolex is a simple timing and profiling utility for PHP
 
-It's designed to time and document the performance of closures, since this is the easiest way to look at the execution time of an entire scope. It's "prettier" than just tossing in @start()@ and @stop()@ calls like most PHP profilers seem to do (although you can do that too, if you want).
+Rolex is designed to time and document the performance of closures, since this is the easiest way to look at the execution time of an entire scope. It's "prettier" than just tossing in @start()@ and @stop()@ calls like most PHP profilers seem to do (although you can do that too, if you want).
 
 The utility consists of a handful of utility classes that are easily accessible through a facade of static class methods.
 
@@ -32,3 +32,17 @@ pre. echo r::run( "straight-up variable access", function() {
 The profiling code and overhead is minimal. You call it simply, and it does what you expect: it displays the difference in float microtime between the moment the closure is called and the moment the closure is finished executing.
 
 The default output of a call to @r::run@ is the message you provide the profiler with the execution time appended to it. For the first example, you might see @instance variable access 1.200102939933@ as the result.
+
+h3. Manual starts and stops
+
+If you prefer not to use a closure, you can also simply time other blocks of code as you see fit. All that's required is that you provide a unique key to the @r::start()@ method so that rolex can keep track of which timers are currently going.
+
+For example, measure this loop:
+
+pre. r::start( "a unique key", "measure my function!" );
+for( $i = 0; $i < 10000000; $i++ ) {
+	do_something_measurable();
+}
+echo r::stop("a unique key");
+
+We provide @r::start@ with a unique key and a message that we'll want to be displayed later. To stop this timer, call @r::stop()@ and provide it with the unique key for the timer you'd like to end. @r::stop()@ returns a result object, which contains both a message and a duration.
