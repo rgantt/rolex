@@ -10,7 +10,8 @@ Say you want to compare the execution time of PHP's variable access versus insta
 
 The first might look like:
 
-pre. echo r::run( "instance variable access", function() {
+pre. require_once "rolex/lib/rolex.php";
+    echo r::run( "instance variable access", function() {
     $obj = new stdClass;
     $obj->foo = "bar";
     $dev_null = null;
@@ -21,7 +22,8 @@ pre. echo r::run( "instance variable access", function() {
 
 The second:
 
-pre. echo r::run( "straight-up variable access", function() {
+pre. require_once "rolex/lib/rolex.php";
+    echo r::run( "straight-up variable access", function() {
     $foo = "bar";
     $dev_null = null;
     for( $i = 0; $i < 10000000; $i++ ) {
@@ -39,7 +41,8 @@ If you prefer not to use a closure, you can also simply time other blocks of cod
 
 For example, measure this loop:
 
-pre. r::start( "a unique key", "measure my function!" );
+pre. require_once "rolex/lib/rolex.php";
+r::start( "a unique key", "measure my function!" );
 for( $i = 0; $i < 10000000; $i++ ) {
 	do_something_measurable();
 }
