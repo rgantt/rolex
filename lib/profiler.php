@@ -1,15 +1,43 @@
 <?php
 namespace rolex;
 
+require_once dirname(__FILE__).'/result.php';
+require_once dirname(__FILE__).'/result_set.php';
+require_once dirname(__FILE__).'/exceptions.php';
+
+define( "ROUND_PRECISION", 10 );
+
 class rolex {
     private $results = array();
     private $timers = array();
     
-    public function profile_function( $message, $closure ) {
+    public function profile_function( $message, $closure, $iterations = 1 ) {
+        if( $iterations === 1 ) {
+            return $this->do_run( $message, $closure );
+        }
+        return $this->multirun_silent( $message, $closure, $iterations );
+    }
+    
+    private function do_run( $message, $closure ) {
         $key = uniqid();
-        $start = $this->start_timer( $key, $message ); 
-        $closure( $start );
+        $this->start_timer( $key, $message );
+        $closure( $key );
         return $this->end_timer( $key );
+    }
+    
+    private function multirun_verbose( $message, $closure, $iterations = 1 ) {
+        $results = new result_set;
+        for( $i = 0; $i < $iterations; $i++ ) {
+            $results->add( $this->do_run( $message, $closure ) );
+        }
+        return $results;
+    }
+    
+    private function multirun_silent( $message, $closure, $iterations = 1 ) {
+        ob_start();
+        $results = $this->multirun_verbose( $message, $closure, $iterations );
+        ob_end_clean();
+        return $results;
     }
     
     public function add_result( $message, $duration ) {
@@ -29,12 +57,12 @@ class rolex {
     
     public function end_timer( $key ) {
         if( !isset( $this->timers[ $key ] ) ) {
-            throw new timing_exception("timer must be started before it can be ended");
+            throw new timing_exception("timer \"{$key}\" must be started before it can be ended");
         }
         $this->timers[ $key ]['end'] = microtime( true );
         return $this->add_result( 
             $this->timers[ $key ]['message'], 
-            ( $this->timers[ $key ]['end'] - $this->timers[ $key ]['start'] )
+            round( ( $this->timers[ $key ]['end'] - $this->timers[ $key ]['start'] ), ROUND_PRECISION )
         );
     }
     
@@ -52,21 +80,5 @@ class rolex {
         $timers = $this->timers;
         $this->timers = array();
         return $timers;
-    }
-}
-
-class timing_exception extends \Exception {}
-
-class result {
-    public $message;
-    public $duration;
-    
-    public function __construct( $message, $duration ) {
-        $this->message = $message;
-        $this->duration = $duration;
-    }
-    
-    public function __toString() {
-        return "{$this->message} {$this->duration}\n";
     }
 }

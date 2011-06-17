@@ -17,8 +17,8 @@ class r {
         return self::$instance;
     }
     
-    public static function run( $message, $closure ) {
-        return self::rolex()->profile_function( $message, $closure );
+    public static function run( $message, $closure, $iterations = 1 ) {
+        return self::rolex()->profile_function( $message, $closure, $iterations );
     }
     
     public static function start( $key, $message = '' ) {
