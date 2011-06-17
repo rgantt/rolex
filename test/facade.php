@@ -4,7 +4,6 @@ namespace rolex;
 require_once dirname(__FILE__).'/../lib/rolex.php';
 
 class facade_test extends \PHPUnit_Framework_TestCase {
-
     public function setUp() {
         r::reset();
     }
@@ -16,6 +15,14 @@ class facade_test extends \PHPUnit_Framework_TestCase {
     
     public function test_run_returns_result() {
         $this->assertTrue( r::run( "test", function() { return true; } ) instanceof result );
+    }
+    
+    public function test_multirun_returns_result_set() {
+        $this->assertTrue( r::run( "foo", function() { return 0; }, 10 ) instanceof result_set );
+    }
+    
+    public function test_multirun_concatenates_results() {
+        $this->assertTrue( strlen( "".r::run( "test", function() { return 0; }, 10 ) ) > ( 10 * strlen("test") ) );
     }
     
     public function test_add_result() {
