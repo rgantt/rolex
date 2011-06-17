@@ -11,7 +11,7 @@ Say you want to compare the execution time of PHP's variable access versus insta
 The first might look like:
 
 pre. require_once "rolex/lib/rolex.php";
-    echo r::run( "instance variable access", function() {
+echo r::run( "instance variable access", function() {
     $obj = new stdClass;
     $obj->foo = "bar";
     $dev_null = null;
@@ -23,7 +23,7 @@ pre. require_once "rolex/lib/rolex.php";
 The second:
 
 pre. require_once "rolex/lib/rolex.php";
-    echo r::run( "straight-up variable access", function() {
+echo r::run( "straight-up variable access", function() {
     $foo = "bar";
     $dev_null = null;
     for( $i = 0; $i < 10000000; $i++ ) {
