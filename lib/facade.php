@@ -1,5 +1,4 @@
-<?php
-namespace rolex;
+<?php namespace rolex;
 
 require_once dirname(__FILE__).'/profiler.php';
 
