@@ -5,12 +5,14 @@ require_once dirname(__FILE__).'/linked_list.php';
 
 class result_set extends linked_list {
     public function __toString() {
-        $buffer = '';
+        $total = 0;
         $current = $this->head;
+        $buffer = $current->data->message;
         while( $current->next ) {
-            $buffer .= $current->data;
+            $total += $current->data->duration;
             $current = $current->next;
         }
-        return $buffer;
+        $avg_duration = (float)($total/$this->length);
+        return "{$buffer}: avg. over {$this->length} iterations = {$avg_duration} ms\n";
     }
 }

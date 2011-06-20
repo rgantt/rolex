@@ -8,13 +8,14 @@ require_once dirname(__FILE__).'/exceptions.php';
 define( "ROUND_PRECISION", 10 );
 
 class rolex {
-    private $results = array();
+    private $results;
     private $timers = array();
     
+    public function __construct() {
+        $this->results = new result_set;
+    }
+    
     public function profile_function( $message, $closure, $iterations = 1 ) {
-        if( $iterations === 1 ) {
-            return $this->do_run( $message, $closure );
-        }
         return $this->multirun_silent( $message, $closure, $iterations );
     }
     
@@ -42,7 +43,7 @@ class rolex {
     
     public function add_result( $message, $duration ) {
         $result = new result( $message, $duration );
-        $this->results[] = $result;
+        $this->results->add( $result );
         return $result;
     }
     
@@ -62,7 +63,7 @@ class rolex {
         $this->timers[ $key ]['end'] = microtime( true );
         return $this->add_result( 
             $this->timers[ $key ]['message'], 
-            round( ( $this->timers[ $key ]['end'] - $this->timers[ $key ]['start'] ), ROUND_PRECISION )
+            round( 1000000*( $this->timers[ $key ]['end'] - $this->timers[ $key ]['start'] ), ROUND_PRECISION )
         );
     }
     
@@ -72,7 +73,7 @@ class rolex {
     
     public function clear_results() {
         $results = $this->results;
-        $this->results = array();
+        $this->results = new result_set;
         return $results;
     }
     

@@ -10,11 +10,11 @@ class facade_test extends \PHPUnit_Framework_TestCase {
     
     public function test_run_retains_message() {
         $str = "test";
-        $this->assertContains( $str, r::run( $str, function() { return false; } )->message );
+        $this->assertContains( $str, r::run( $str, function() { return false; } )->head()->message );
     }
     
-    public function test_run_returns_result() {
-        $this->assertTrue( r::run( "test", function() { return true; } ) instanceof result );
+    public function test_run_returns_result_set() {
+        $this->assertTrue( r::run( "test", function() { return true; } ) instanceof result_set );
     }
     
     public function test_multirun_returns_result_set() {
@@ -39,23 +39,23 @@ class facade_test extends \PHPUnit_Framework_TestCase {
     public function test_clear_results_saves_results() {
         $this->add_results();
         $results = r::clear();
-        $this->assertEquals( 2, count( $results ) );
-        $this->assertEquals( "first", $results[0]->message );
-        $this->assertEquals( "second", $results[1]->message );
+        $this->assertEquals( 2, $results->length() );
+        $this->assertEquals( "first", $results->index(0)->message );
+        $this->assertEquals( "second", $results->index(1)->message );
     }
     
     public function test_clear_results_clears_results() {
         $this->add_results();
         r::clear();
-        $this->assertEquals( array(), r::results() );
+        $this->assertEquals( new result_set, r::results() );
     }
     
     public function test_results() {
         $this->add_results();
         $results = r::results();
-        $this->assertEquals( 2, count( $results ) );
-        $this->assertEquals( "first", $results[0]->message );
-        $this->assertEquals( "second", $results[1]->message );
+        $this->assertEquals( 2, $results->length() );
+        $this->assertEquals( "first", $results->index(0)->message );
+        $this->assertEquals( "second", $results->index(1)->message );
     }
     
     public function test_start_and_stop() {
