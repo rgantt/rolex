@@ -1,7 +1,7 @@
 <?php
 namespace rolex;
 
-require_once dirname(__FILE__).'/../lib/rolex.php';
+require_once dirname(__FILE__).'/../lib/facade.php';
 
 class facade_test extends \PHPUnit_Framework_TestCase {
     public function setUp() {
