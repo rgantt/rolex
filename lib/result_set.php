@@ -8,10 +8,10 @@ class result_set extends linked_list {
         $total = 0;
         $current = $this->head;
         $buffer = $current->data->message;
-        while( $current->next ) {
+        do {
             $total += $current->data->duration;
             $current = $current->next;
-        }
+        } while( $current->next );
         $avg_duration = (float)($total/$this->length);
         return "{$buffer}: avg. over {$this->length} iterations = {$avg_duration} ms\n";
     }
