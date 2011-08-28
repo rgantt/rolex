@@ -12,7 +12,7 @@ class result_set extends linked_list {
             $total += $current->next->data->duration;
             $current = $current->next;
         }
-        $avg_duration = (float)($total/$this->length);
+        $avg_duration = (float)(($total/1000)/$this->length);
         return "{$buffer}: avg. over {$this->length} iterations = {$avg_duration} ms\n";
     }
 }
