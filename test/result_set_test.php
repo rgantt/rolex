@@ -18,4 +18,17 @@ class result_set_test extends \PHPUnit_Framework_TestCase {
         $this->rolex->profile_function( "test", function(){ return pow( 10, pow( 10, 10 ) ); }, 1 );
         $this->assertEquals( 0, preg_match( "/0 ms$/", $this->rolex->get_results() ) );
     }
+	
+	public function test_avg_between_lowest_and_highest() {
+		$this->rolex->profile_function( "test", function(){
+			static $sl = 1;
+			sleep( $sl );
+			$sl++;
+		}, 2);
+		$results = $this->rolex->get_results();
+		$avg = array();
+		preg_match( "/[-+]?([0-9]*\.[0-9]+|[0-9]+) ms$/", (string) $results, $avg );
+		$this->assertTrue( $avg[1] > $results->index(0)->duration );
+		$this->assertTrue( $avg[1] < $results->index(1)->duration );
+	}
 }
