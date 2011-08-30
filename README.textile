@@ -1,4 +1,4 @@
-h2. Rolex is a simple timing and profiling utility for PHP
+h2. Rolex is a simple timing and profiling utility for PHP 5.3
 
 Rolex is designed to time and document the performance of closures, since this is the easiest way to look at the execution time of an entire scope. It's "prettier" than just tossing in @start()@ and @stop()@ calls like most PHP profilers seem to do (although you can do that too, if you want).
 
