@@ -1,12 +1,12 @@
-h2. Rolex is a simple timing and profiling utility for PHP 5.3
+h2. Rolex is a simple timing utility for PHP 5.3
 
-Rolex is designed to time and document the performance of closures, since this is the easiest way to look at the execution time of an entire scope. It's "prettier" than just tossing in @start()@ and @stop()@ calls like most PHP profilers seem to do (although you can do that too, if you want).
+Rolex is designed to measure the runtime of blocks of code. Since the easiest way to look at the execution time of an entire scope is by throwing code into a function body, that's what @rolex@ encourages. It's prettier (TM) than just tossing in @start()@ and @stop()@ calls (although you can do that too, if you want).
 
-The utility consists of a handful of utility classes that are easily accessible through a facade of static class methods.
+Rolex consists of utility classes that are accessible through a static class facade.
 
 h2. Example usage
 
-Say you want to compare the execution time of PHP's variable access versus instance variable access. In that case, you would run two profiles (one for the former and one for the latter).
+You want to compare execution time of variable versus instance variable access. In that case, run two profiles (one for the former and one for the latter).
 
 The first might look like:
 
@@ -17,7 +17,7 @@ $obj->foo = "bar";
 $dev_null = null;
 echo r::run( "instance variable access", function() use( $obj, $dev_null ) {
     $dev_null = $obj->foo; // to test how long it takes to make the assignment
-}, 1000);
+});
 
 The second:
 
@@ -26,20 +26,18 @@ use rolex\r;
 $foo = "bar";
 $dev_null = null;
 echo r::run( "scope variable access", function() use( $foo, $dev_null ) {
-    $dev_null = $foo;
-}, 1000);
+    $dev_null = $foo; // to test how long it takes to make the assignment
+});
 
-Profiling methods (or starting and stopping the profiler on your own) always creates a @result_set@ object which is populated with the message you provided (if any) and the duration. By default, using such a return value as a string simply displays the message, along with the average duratiofor the number of iterations you ran.
+Measuring execution time always creates a @result_set@ object which is populated with the message you provide and the duration. By default, treating the @result_set@ as a string simply displays this message along with average duration. A call to @r::run@ returns the message you provide with the execution time appended to it. For the first example, you might see @instance variable access: avg. over 1000 iterations = 1.200102939 ms@ as the result.
 
-Of course, you can also do whatever you want with the @result_set@. It's just a linked list.
+You can do whatever you want with the @result_set@. It's just a linked list. Go crazy.
 
-The profiling code and overhead is minimal. You call it simply, and it does what you expect: it displays the difference in float microtime between the moment the closure is called and the moment the closure is finished executing.
-
-The default output of a call to @r::run@ is the message you provide the profiler with the execution time appended to it. For the first example, you might see @instance variable access: avg. over 1000 iterations = 1.200102939 ms@ as the result.
+The overhead of the timing code is minimal and constant. You call it simply, and it does what you expect: displays the difference in ms between the moment the closure is called and the moment the closure is finished executing (or the block if you are manually starting and stopping).
 
 h3. Manual starts and stops
 
-If you prefer not to use a closure, you can also simply time other blocks of code as you see fit. All that's required is that you provide a unique key to the @r::start()@ method so that rolex can keep track of which timers are currently going.
+If you prefer not to use a closure, time _anything_ by starting and stopping the timer manually. Just provide a unique key to the @r::start()@ method so that rolex can keep track of which timers are currently going. Provide that same key to @r::stop()@ when you want the timer to end.
 
 For example, measure this loop:
 
@@ -51,4 +49,4 @@ for( $i = 0; $i < 10000000; $i++ ) {
 }
 echo r::stop("a unique key");
 
-We provide @r::start@ with a unique key and a message that we'll want to be displayed later. To stop this timer, call @r::stop()@ and provide it with the unique key for the timer you'd like to end. @r::stop()@ returns a result object, which contains both a message and a duration.
+@r::stop()@ returns a result object, which contains both a message and a duration. You cannot control the number of iterations that are run when you manually start and stop, because @rolex@ has no access to the code in between.
