@@ -11,19 +11,21 @@ Say you want to compare the execution time of PHP's variable access versus insta
 The first might look like:
 
 pre. require_once "rolex/rolex.php";
+use rolex\r;
 $obj = new stdClass;
 $obj->foo = "bar";
 $dev_null = null;
-echo rolex\r::run( "instance variable access", function() use( $obj, $dev_null ) {
+echo r::run( "instance variable access", function() use( $obj, $dev_null ) {
     $dev_null = $obj->foo; // to test how long it takes to make the assignment
 }, 1000);
 
 The second:
 
 pre. require_once "rolex/rolex.php";
+use rolex\r;
 $foo = "bar";
 $dev_null = null;
-echo rolex\r::run( "scope variable access", function() use( $foo, $dev_null ) {
+echo r::run( "scope variable access", function() use( $foo, $dev_null ) {
     $dev_null = $foo;
 }, 1000);
 
@@ -33,7 +35,7 @@ Of course, you can also do whatever you want with the @result_set@. It's just a 
 
 The profiling code and overhead is minimal. You call it simply, and it does what you expect: it displays the difference in float microtime between the moment the closure is called and the moment the closure is finished executing.
 
-The default output of a call to @r::run@ is the message you provide the profiler with the execution time appended to it. For the first example, you might see @instance variable access 1.200102939933@ as the result.
+The default output of a call to @r::run@ is the message you provide the profiler with the execution time appended to it. For the first example, you might see @instance variable access: avg. over 1000 iterations = 1.200102939 ms@ as the result.
 
 h3. Manual starts and stops
 
@@ -42,6 +44,7 @@ If you prefer not to use a closure, you can also simply time other blocks of cod
 For example, measure this loop:
 
 pre. require_once "rolex/lib/rolex.php";
+use rolex\r;
 r::start( "a unique key", "measure my function!" );
 for( $i = 0; $i < 10000000; $i++ ) {
 	do_something_measurable();
